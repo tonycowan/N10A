@@ -70,6 +70,15 @@ jobs:
           ANDROID_RUN_ID: ${{ inputs.android_run_id }}
         run: bash scripts/fetch-unsigned.sh
 
+      - name: Fetch the change summary
+        env:
+          GH_TOKEN: ${{ secrets.PRNS_ACTIONS_TOKEN }}
+          PRNS_SHA: ${{ inputs.prns_sha }}
+        run: |
+          set -euo pipefail
+          gh api "repos/tonycowan/Prns/contents/personal-hopspot/comms/RELEASE_NOTES.md?ref=${PRNS_SHA}" --jq .content | base64 -d > unsigned/RELEASE_NOTES.md
+          test -s unsigned/RELEASE_NOTES.md
+
       - name: Sign and notarize macOS
         if: inputs.sign_macos == true
         env:
@@ -92,6 +101,13 @@ jobs:
           if-no-files-found: error
           retention-days: 14
 
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: release-notes
+          path: unsigned/RELEASE_NOTES.md
+          if-no-files-found: error
+          retention-days: 14
+
   publish:
     name: GitHub Release
     needs: prepare
@@ -102,6 +118,11 @@ jobs:
         with:
           name: release-assets
           path: dist
+
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: release-notes
+          path: notes
 
       - name: Publish Release
         env:
@@ -116,6 +137,10 @@ jobs:
         run: |
           notes="$(mktemp)"
           {
+            cat notes/RELEASE_NOTES.md
+            echo
+            echo "---"
+            echo
             echo "Prns SHA: \`$PRNS_SHA\`"
             echo
             echo "Unsigned Actions runs on \`tonycowan/Prns\`:"
