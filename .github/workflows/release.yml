@@ -60,6 +60,24 @@ jobs:
           echo "publish=true is only allowed on main (this ref is ${{ github.ref }})" >&2
           exit 1
 
+      - name: Require the app version to match the tag
+        if: inputs.publish == true
+        env:
+          GH_TOKEN: ${{ secrets.PRNS_ACTIONS_TOKEN }}
+          PRNS_SHA: ${{ inputs.prns_sha }}
+          TAG: ${{ inputs.tag }}
+        run: |
+          set -euo pipefail
+          cargo_toml="$(mktemp)"
+          gh api "repos/tonycowan/Prns/contents/personal-hopspot/comms/Cargo.toml?ref=${PRNS_SHA}" --jq .content | base64 -d > "$cargo_toml"
+          version="$(awk -F'"' '/^version = / { print $2; exit }' "$cargo_toml")"
+          expect="${TAG#v}"
+          if [ -z "$version" ] || [ "$version" != "$expect" ]; then
+            echo "personal-hopspot/comms Cargo.toml version is '${version:-missing}', tag is $TAG" >&2
+            echo "Bump that version to $expect and build every app with TOUCHBASE_RELEASE=1." >&2
+            exit 1
+          fi
+
       - name: Fetch and verify unsigned packages
         env:
           GH_TOKEN: ${{ secrets.PRNS_ACTIONS_TOKEN }}
@@ -158,6 +176,8 @@ jobs:
             echo
             echo "Desktop OS archives ship both **aarch64** and **x86_64**."
             echo "Android ships an unsigned APK for **aarch64** (arm64-v8a)."
+            echo
+            echo "Every app in this release shows \`v${TAG#v}\`."
             echo
             echo '```'
             cat dist/SHA256SUMS
