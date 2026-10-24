@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Developer ID-sign and notarize each unsigned macOS TouchBase .app (per arch).
+# Developer ID-sign and notarize each unsigned macOS Optio .app (per arch).
 set -euo pipefail
 
 require() {
@@ -75,9 +75,9 @@ sign_zip() {
     mkdir -p "$stage"
     unzip -q "$zip_path" -d "$stage"
     local app
-    app="$(find "$stage" -maxdepth 2 -type d -name 'TouchBase.app' | head -n 1)"
+    app="$(find "$stage" -maxdepth 2 -type d -name 'Optio.app' | head -n 1)"
     if [[ -z "$app" ]]; then
-        echo "error: no TouchBase.app in $zip_path" >&2
+        echo "error: no Optio.app in $zip_path" >&2
         exit 1
     fi
 
@@ -91,7 +91,7 @@ sign_zip() {
     sign_one "$app"
     codesign --verify --strict --verbose=2 "$app"
 
-    local signed_zip="$work/TouchBase-macos-$arch.zip"
+    local signed_zip="$work/Optio-macos-$arch.zip"
     ditto -c -k --keepParent "$app" "$signed_zip"
 
     local submit_out="$work/notary-$arch.txt"
@@ -121,12 +121,12 @@ sign_zip() {
 
     xcrun stapler staple "$app"
     rm -f "$zip_path"
-    ditto -c -k --keepParent "$app" "$root/unsigned/macos/TouchBase-macos-$arch.zip"
+    ditto -c -k --keepParent "$app" "$root/unsigned/macos/Optio-macos-$arch.zip"
     echo "signed $(basename "$app") ($arch)"
 }
 
 shopt -s nullglob
-unsigned_zips=( "$root"/unsigned/macos/TouchBase-macos-*-unsigned.zip )
+unsigned_zips=( "$root"/unsigned/macos/Optio-macos-*-unsigned.zip )
 shopt -u nullglob
 if [[ ${#unsigned_zips[@]} -eq 0 ]]; then
     echo "error: no unsigned macOS zips under unsigned/macos/" >&2
@@ -135,8 +135,8 @@ fi
 
 for zip_path in "${unsigned_zips[@]}"; do
     base="$(basename "$zip_path")"
-    # TouchBase-macos-<arch>-unsigned.zip
-    arch="${base#TouchBase-macos-}"
+    # Optio-macos-<arch>-unsigned.zip
+    arch="${base#Optio-macos-}"
     arch="${arch%-unsigned.zip}"
     if [[ -z "$arch" || "$arch" == "$base" ]]; then
         echo "error: cannot parse arch from $base" >&2

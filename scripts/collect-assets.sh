@@ -7,17 +7,17 @@ dist="$root/dist"
 rm -rf "$dist"
 mkdir -p "$dist"
 
-cp "$root"/unsigned/linux/TouchBase-linux-*-unsigned.tar.gz "$dist/"
-cp "$root"/unsigned/windows/TouchBase-windows-*-unsigned.zip "$dist/"
-cp "$root"/unsigned/android/TouchBase-android-*-unsigned.apk "$dist/"
+cp "$root"/unsigned/linux/Optio-linux-*-unsigned.tar.gz "$dist/"
+cp "$root"/unsigned/windows/Optio-windows-*-unsigned.zip "$dist/"
+cp "$root"/unsigned/android/Optio-android-*-unsigned.apk "$dist/"
 
 shopt -s nullglob
-signed=( "$root"/unsigned/macos/TouchBase-macos-aarch64.zip \
-         "$root"/unsigned/macos/TouchBase-macos-x86_64.zip )
+signed=( "$root"/unsigned/macos/Optio-macos-aarch64.zip \
+         "$root"/unsigned/macos/Optio-macos-x86_64.zip )
 if [[ ${#signed[@]} -eq 2 && -f "${signed[0]}" && -f "${signed[1]}" ]]; then
     cp "${signed[@]}" "$dist/"
 else
-    cp "$root"/unsigned/macos/TouchBase-macos-*-unsigned.zip "$dist/"
+    cp "$root"/unsigned/macos/Optio-macos-*-unsigned.zip "$dist/"
 fi
 shopt -u nullglob
 

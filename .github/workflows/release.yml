@@ -8,19 +8,19 @@ on:
         required: true
         type: string
       macos_run_id:
-        description: tonycowan/Prns run ID for touchbase-macos-package
+        description: tonycowan/Prns run ID for optio-macos-package
         required: true
         type: string
       linux_run_id:
-        description: tonycowan/Prns run ID for touchbase-linux-package
+        description: tonycowan/Prns run ID for optio-linux-package
         required: true
         type: string
       windows_run_id:
-        description: tonycowan/Prns run ID for touchbase-windows-package
+        description: tonycowan/Prns run ID for optio-windows-package
         required: true
         type: string
       android_run_id:
-        description: tonycowan/Prns run ID for touchbase-android-package
+        description: tonycowan/Prns run ID for optio-android-package
         required: true
         type: string
       tag:
