@@ -1,3 +1,4 @@
+<img width="64" height="64" alt="WhatsApp Image 2026-10-27 at 20 44 47" src="https://github.com/user-attachments/assets/3aca0af0-13a2-4cad-ac57-09fc651b332c" />
 # N10A
 
 <img src="n10a.png" alt="N10A" width="180">
