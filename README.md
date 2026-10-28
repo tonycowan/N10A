@@ -1,8 +1,10 @@
-# Optio
+# N10A
 
-Optio is a private journal you share with people you have added. You add someone by photographing their code.
+<img src="n10a.png" alt="N10A" width="180">
 
-**[Download the latest release](https://github.com/tonycowan/Optio/releases/latest)**
+N10A is a private journal you share with people you have added. You add someone by photographing their code.
+
+**[Download the latest release](https://github.com/tonycowan/N10A/releases/latest)**
 
 Releases include macOS, Linux, Windows, and an Android app.
 
