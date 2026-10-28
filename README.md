@@ -1,6 +1,6 @@
 # N10A
 
-<img src="n10a.png" alt="N10A" width="180">
+<img src="n10a.png" alt="N10A" width="180" style="background-color: white;">
 
 N10A is a private journal you share with people you have added. You add someone by photographing their code.
 
